@@ -79,8 +79,6 @@ function parse(e) {
         result.push(pile.pop())
       } while (pile[pile.length - 1] != '(');
       pile.pop()
-
-
     }
   }
   
@@ -88,5 +86,41 @@ function parse(e) {
     result.push(pile.pop())
   } while (pile.length - 1 === 0);
 
-  output.innerHTML = result
+  output.innerHTML = '<h2>Notacion Postfija</h2><p>'+result+'</p>'
+  parseTree(result)
+}
+
+function Node(value, left = null, right = null) {
+  this.value = value
+  this.left = left
+  this.right = right
+
+  // this.z = z;
+}
+
+function parseTree(postfix) {
+  const nodeList = []
+  // let z = 0
+  for (let i = 0; i < postfix.length; i++) {
+
+    const e = postfix[i];
+    
+    if(NUMBER.includes(+e)) {
+      nodeList.push(new Node(e))
+    }
+
+    if(OP.includes(e)) {
+      const left = nodeList.pop()
+      const right = nodeList.pop()
+      // z++
+      nodeList.push(new Node(e, left, right))
+    }    
+  }
+  output.innerHTML += '<h2>Arbol</h2><div>'+JSON.stringify(nodeList[0])+'</div> <span>-Se recomienda visualizar arbol en consola-</span>' 
+  displayTree(nodeList[0])
+}
+
+function displayTree(tree) {
+  console.log(tree)
+
 }
